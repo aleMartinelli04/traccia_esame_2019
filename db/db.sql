@@ -68,33 +68,19 @@ CREATE TABLE IF NOT EXISTS pagina_avanzata
 
 CREATE TABLE IF NOT EXISTS biglietto
 (
-    id               INT  NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    giorno_emissione DATE NOT NULL DEFAULT NOW(),
+    id               INT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    tipo             VARCHAR(20) NOT NULL CHECK ( tipo IN ('base', 'intermedio', 'pieno')),
+    giorno_emissione DATE        NOT NULL DEFAULT NOW(),
     documento        VARCHAR(64),
     carta_credito    VARCHAR(64),
-    info_point       INT  NOT NULL REFERENCES info_point (id),
-    dispositivo      INT  NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS biglietto_base
-(
-    biglietto INT NOT NULL PRIMARY KEY REFERENCES biglietto (id)
-);
-
-CREATE TABLE IF NOT EXISTS biglietto_intermedio
-(
-    biglietto INT NOT NULL PRIMARY KEY REFERENCES biglietto (id)
-);
-
-CREATE TABLE IF NOT EXISTS biglietto_pieno
-(
-    biglietto INT NOT NULL PRIMARY KEY REFERENCES biglietto (id)
+    info_point       INT         NOT NULL REFERENCES info_point (id),
+    dispositivo      INT         NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS visite
 (
-    biglietto_intermedio INT NOT NULL REFERENCES biglietto (id),
-    poi                  INT NOT NULL REFERENCES poi (id),
+    biglietto INT NOT NULL REFERENCES biglietto (id),
+    poi       INT NOT NULL REFERENCES poi (id),
 
-    PRIMARY KEY (biglietto_intermedio, poi)
+    PRIMARY KEY (biglietto, poi)
 );

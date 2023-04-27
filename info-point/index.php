@@ -47,9 +47,9 @@ $infoPoints = getInfoPoints();
                 <label for="tipoBiglietto">Tipo Biglietto</label>
                 <select name="tipoBiglietto" id="tipoBiglietto">
                     <option selected disabled>Seleziona tipo biglietto</option>
-                    <option value="B">Base</option>
-                    <option value="I">Intermedio</option>
-                    <option value="P">Pieno</option>
+                    <option value="base">Base</option>
+                    <option value="intermedio">Intermedio</option>
+                    <option value="pieno">Pieno</option>
                 </select>
             </div>
 

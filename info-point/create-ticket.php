@@ -16,7 +16,7 @@ if (!$cartaCredito || $cartaCredito == '') {
 if (($cartaCredito || $documento) && $infoPoint && $tipoBiglietto) {
     require_once '../db/db.php';
 
-    createTicket($documento, $cartaCredito, $infoPoint, $dispositivo, $tipoBiglietto);
+    createTicket($tipoBiglietto, $documento, $cartaCredito, $infoPoint, $dispositivo);
 
     header('Location: ./index.php');
 } else {

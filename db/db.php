@@ -22,27 +22,51 @@ function getInfoPoints()
     return $stmt->fetchAll();
 }
 
-function createTicket($documento, $cartaCredito, $infoPoint, $dispositivo, $tipoBiglietto)
+function createTicket($tipo, $documento, $cartaCredito, $infoPoint, $dispositivo)
 {
     $pdo = getPDO();
 
-    $stmt = $pdo->prepare("INSERT INTO biglietto(id, documento, carta_credito, info_point, dispositivo) VALUES (DEFAULT, ?, ?, ?, ?)");
-    $stmt->execute([$documento, $cartaCredito, $infoPoint, $dispositivo]);
+    $stmt = $pdo->prepare("INSERT INTO biglietto(id, tipo, documento, carta_credito, info_point, dispositivo) VALUES (DEFAULT, ?, ?, ?, ?, ?)");
+    $stmt->execute([$tipo, $documento, $cartaCredito, $infoPoint, $dispositivo]);
+}
 
-    $ticketId = $pdo->lastInsertId();
 
-    switch ($tipoBiglietto) {
-        case 'B':
-            $stmt = $pdo->prepare("INSERT INTO biglietto_base(biglietto) VALUES (?)");
-            $stmt->execute([$ticketId]);
-            break;
-        case 'I':
-            $stmt = $pdo->prepare("INSERT INTO biglietto_intermedio(biglietto) VALUES (?)");
-            $stmt->execute([$ticketId]);
-            break;
-        case 'P':
-            $stmt = $pdo->prepare("INSERT INTO biglietto_pieno(biglietto) VALUES (?)");
-            $stmt->execute([$ticketId]);
-            break;
-    }
+function getBiglietto($idBiglietto)
+{
+    $pdo = getPDO();
+
+    $stmt = $pdo->prepare("SELECT * FROM biglietto WHERE id = ?");
+    $stmt->execute([$idBiglietto]);
+
+    return $stmt->fetch();
+}
+
+function getPointsOfInterest()
+{
+    $pdo = getPDO();
+
+    $stmt = $pdo->prepare("SELECT * FROM poi");
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
+
+function getPOI($id)
+{
+    $pdo = getPDO();
+
+    $stmt = $pdo->prepare("SELECT * FROM poi WHERE id = ?");
+    $stmt->execute([$id]);
+
+    return $stmt->fetch();
+}
+
+function getVisitedPOIs($ticketId)
+{
+    $pdo = getPDO();
+
+    $stmt = $pdo->prepare("SELECT * FROM visite WHERE biglietto = ?");
+    $stmt->execute([$ticketId]);
+
+    return $stmt->fetchAll();
 }
